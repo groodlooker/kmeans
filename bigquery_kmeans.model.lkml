@@ -4,7 +4,7 @@ connection: "lookerdata"
 include: "*.view"
 
 datagroup: bigquery_kmeans_default_datagroup {
-  # sql_trigger: SELECT MAX(id) FROM etl_log;;
+  sql_trigger: SELECT MAX(pk) FROM transaction_history;;
   max_cache_age: "1 hour"
 }
 
