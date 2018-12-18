@@ -76,6 +76,7 @@ view: transaction_history {
 
   measure: latest_purchase_hide {
     type: date
+    hidden: yes
     sql: MAX(${invoice_date}) ;;
   }
 

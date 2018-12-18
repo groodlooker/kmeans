@@ -42,10 +42,10 @@ view: kmeans_model {
         SELECT *
         FROM ${input_data.SQL_TABLE_NAME};;
   }
-  parameter: number_of_clusters {
-    type: number
-    default_value: "3"
-  }
+#   parameter: number_of_clusters {
+#     type: number
+#     default_value: "3"
+#   }
 }
 
 view: centroids {
@@ -70,15 +70,30 @@ view: centroids {
 view: centroids_categorical {
   dimension: category {}
   dimension: feature_value {}
+#   dimension: pkcc {
+#     hidden: yes
+#     sql: concat(${category},${feature_value}) ;;
+#   }
   measure: avg_value {
     type: average
     sql: ${feature_value} ;;
   }
 }
 
-# SELECT * FROM ML.PREDICT(MODEL kmeans_demo.my_model, (SELECT * FROM higgs.test LIMIT 5))
+view: nearest_centroids {
+  view_label: "Kmeans Clusters"
+  dimension: centroid_id {
+    label: "Nearest Centroid Id"
+  }
+  dimension: distance {type:number}
+  measure: avg_distance {
+    type: average
+    sql: ${distance} ;;
+  }
+}
 
 view: kmeans_predictions {
+  view_label: "Kmeans Clusters"
   derived_table: {
 #     datagroup_trigger: bigquery_kmeans_default_datagroup
     sql: SELECT *
@@ -95,22 +110,21 @@ view: kmeans_predictions {
     label: "Top 20"
     }
   dimension: centroid_id {type:number}
-  dimension: nearest_centroids_distance {}
+#   dimension: nearest_centroids_distance {}
   measure: m_total_amount_spent_log {
+    label: "Amount Spent (log)"
     type: max
     sql: ${total_amount_spent_log} ;;
   }
   measure: m_unique_invoice_count_log {
+    label: "Invoice Count (log)"
     type: max
     sql: ${unique_invoice_count_log} ;;
   }
   measure: m_days_since_purchase_log {
     type: max
-    label: "Days Since Purch"
+    label: "Days Since Purch (log)"
     sql: ${days_since_purchase_log} ;;
   }
-#   measure: m_nearest_centroids_distance {
-#     type: average
-#     sql: ${nearest_centroids_distance} ;;
-#   }
+
 }
