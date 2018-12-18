@@ -36,11 +36,43 @@ view: kmeans_model {
     sql_create:
       CREATE OR REPLACE MODEL ${SQL_TABLE_NAME}
       OPTIONS(model_type='kmeans',
-        num_clusters=3,
+        num_clusters= {% parameter transaction_history.number_of_clusters %},
         distance_type='euclidean')
         AS
         SELECT *
         FROM ${input_data.SQL_TABLE_NAME};;
+  }
+  parameter: number_of_clusters {
+    type: number
+    default_value: "3"
+  }
+}
+
+view: centroids {
+  derived_table: {
+    sql: SELECT * FROM ML.CENTROIDS(MODEL ${kmeans_model.SQL_TABLE_NAME}) ;;
+  }
+  dimension: centroid_id {
+    type: number
+  }
+  dimension: numerical_feature {
+    type: string
+  }
+  dimension: feature_value {
+    type: number
+  }
+  measure: avg_feature_value {
+    type: average
+    sql: ${feature_value} ;;
+  }
+}
+
+view: centroids_categorical {
+  dimension: category {}
+  dimension: feature_value {}
+  measure: avg_value {
+    type: average
+    sql: ${feature_value} ;;
   }
 }
 
@@ -58,9 +90,27 @@ view: kmeans_predictions {
   dimension: total_amount_spent_log {type:number}
   dimension: days_since_purchase_log {type:number}
   dimension: unique_invoice_count_log {type:number}
-  dimension: top_20_percent {type:yesno}
+  dimension: top_20_percent {
+    type:yesno
+    label: "Top 20"
+    }
   dimension: centroid_id {type:number}
   dimension: nearest_centroids_distance {}
+  measure: m_total_amount_spent_log {
+    type: max
+    sql: ${total_amount_spent_log} ;;
+  }
+  measure: m_unique_invoice_count_log {
+    type: max
+    sql: ${unique_invoice_count_log} ;;
+  }
+  measure: m_days_since_purchase_log {
+    type: max
+    label: "Days Since Purch"
+    sql: ${days_since_purchase_log} ;;
+  }
+#   measure: m_nearest_centroids_distance {
+#     type: average
+#     sql: ${nearest_centroids_distance} ;;
+#   }
 }
-
-explore: kmeans_predictions {}

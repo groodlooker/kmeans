@@ -1,3 +1,5 @@
+include: "*.view"
+
 view: transaction_history {
   sql_table_name: online_retail.transaction_history ;;
 
@@ -85,6 +87,11 @@ view: transaction_history {
   measure: unique_invoice_count {
     type: count_distinct
     sql: ${invoice_no} ;;
+  }
+
+  parameter: number_of_clusters {
+    type: number
+    default_value: "3"
   }
 
 # pareto fields
