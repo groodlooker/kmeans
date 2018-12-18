@@ -124,6 +124,7 @@ view: kmeans_predictions {
     sql: ${total_amount_spent_log} ;;
   }
   measure: m_unique_invoice_count_log {
+    drill_fields: [transaction_history.invoice_details*]
     label: "Invoice Count (log)"
     type: max
     sql: ${unique_invoice_count_log} ;;

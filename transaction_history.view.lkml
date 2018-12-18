@@ -18,6 +18,11 @@ view: transaction_history {
   dimension: customer_id {
     type: number
     sql: ${TABLE}.CustomerID ;;
+    drill_fields: [invoice_details*]
+  }
+
+  set: invoice_details {
+    fields: [invoice_no,invoice_date,description,stock_code]
   }
 
   dimension: description {
