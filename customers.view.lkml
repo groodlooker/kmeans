@@ -48,14 +48,17 @@ view: customers {
     # ################################
     # viz use only
     measure: days_since_purchse_m {
+      label: "Days Since Last Purchase"
       type: min
       sql: ${days_recency_of_purchase} ;;
     }
     measure: unique_invoice_count_m {
+      label: "Unique Invoice Count"
       type: min
       sql: ${unique_invoice_count} ;;
     }
     measure: total_amount_spent_m {
+      label: "Total Amount Spent"
       type: min
       sql: ${total_amount_spent} ;;
     }

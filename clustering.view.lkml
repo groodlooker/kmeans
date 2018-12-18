@@ -85,6 +85,11 @@ view: nearest_centroids {
   dimension: centroid_id {
     label: "Nearest Centroid Id"
   }
+  dimension: pknc {
+    type: string
+    primary_key: yes
+    sql: concat(cast(${centroid_id} as string),cast(${distance} as string)) ;;
+  }
   dimension: distance {type:number}
   measure: avg_distance {
     type: average
@@ -101,7 +106,9 @@ view: kmeans_predictions {
       MODEL ${kmeans_model.SQL_TABLE_NAME},
       (SELECT * FROM ${input_data.SQL_TABLE_NAME}));;
   }
-  dimension: customer_id {type:number}
+  dimension: customer_id {
+    primary_key: yes
+    type:number}
   dimension: total_amount_spent_log {type:number}
   dimension: days_since_purchase_log {type:number}
   dimension: unique_invoice_count_log {type:number}
