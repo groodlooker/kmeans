@@ -55,7 +55,7 @@ explore: kmeans_predictions {
 
 explore: centroids {
   join: centroids_categorical {
-    sql: LEFT JOIN UNNEST(centroids.categorical_feature) as centroids_categorical ;;
+    sql: LEFT JOIN UNNEST(centroids.categorical_value) as centroids_categorical ;;
     relationship: one_to_many
   }
   join: transaction_history {

@@ -55,28 +55,30 @@ view: centroids {
   dimension: centroid_id {
     type: number
   }
-  dimension: numerical_feature {
+  dimension: feature {
     type: string
   }
-  dimension: feature_value {
+  dimension: numerical_value {
     type: number
   }
   measure: avg_feature_value {
     type: average
-    sql: ${feature_value} ;;
+    label: "Avg Numerical Value"
+    sql: ${numerical_value} ;;
   }
 }
 
 view: centroids_categorical {
+  dimension: categorical_value {}
   dimension: category {}
-  dimension: feature_value {}
+  dimension: value {}
 #   dimension: pkcc {
 #     hidden: yes
 #     sql: concat(${category},${feature_value}) ;;
 #   }
   measure: avg_value {
     type: average
-    sql: ${feature_value} ;;
+    sql: ${value} ;;
   }
 }
 
