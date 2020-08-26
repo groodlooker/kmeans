@@ -15,6 +15,7 @@ view: customers {
         }
       }
     }
+
     dimension: customer_id {
       type: number
       primary_key: yes
